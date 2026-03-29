@@ -4,7 +4,7 @@ Project for analyzing jobs submitted to Habrok GPU Nodes.
 ## Project structure
 
 - `data/hardware_reports/`: JSON files containing DCGM reports.
-- `data/habrok_script_and_metadata.zip`: Contains jobs metadata and artificial SLURM script per job.
+- `habrok_script_and_metadata.zip`: Contains jobs metadata and artificial SLURM script per job. (Large file, hence not pushed to github, but shared on Google Drive)
 - `utils/`: Utility scripts.
 - `analysis.ipynb`: Example showing how to interact with the data.
 
