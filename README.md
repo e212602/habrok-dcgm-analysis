@@ -21,7 +21,7 @@ Project for analyzing jobs submitted to Habrok GPU Nodes.
 - Current Data contain reports collected from June 2025 up to March 2026.
 
 ## SLURM Scripts
-- Due to privacy restrictions, extracting submitted SLURM scripts is infeasible. Thus, we use sacct to extract metadata and use it to artificially generate SLURM scripts per job. (utils/python/generate_slurm_script.py)
+- Due to privacy restrictions, extracting submitted SLURM scripts is not permitted. Thus, we use sacct to extract metadata and use it to artificially generate SLURM scripts per job. (utils/python/generate_slurm_script.py)
 
 ## TODO
 
