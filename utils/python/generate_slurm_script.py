@@ -86,17 +86,26 @@ def extract_sbatch_params(job_data):
     
     # GPUs (from TRES)
     if "tres" in job_data and "requested" in job_data["tres"]:
-        for tres in job_data["tres"]["requested"]:
-            if tres.get("type") == "gres" and "gpu" in tres.get("name", ""):
-                gpu_name = tres["name"]  # e.g., "gpu" or "gpu:a100"
-                gpu_count = tres["count"]
-                if gpu_name == "gpu":
-                    params["gres"] = f"gpu:{gpu_count}"
-                else:
-                    # Extract specific GPU type
-                    gpu_type = gpu_name.split(":")[-1]
-                    params["gres"] = f"gpu:{gpu_type}:{gpu_count}"
-                break
+        gpu_items = [
+            t for t in job_data["tres"]["requested"] 
+            if t.get("type") == "gres" and "gpu" in t.get("name", "")
+        ]
+        
+        if gpu_items:
+            # Try to find an item with a specific model (contains ':')
+            specific_gpu = next((item for item in gpu_items if ":" in item["name"]), None)
+            
+            # Fallback to the first available generic GPU item if specific wasn't found
+            target_gpu = specific_gpu if specific_gpu else gpu_items[0]
+            
+            gpu_name = target_gpu["name"]
+            gpu_count = target_gpu["count"]
+            
+            if ":" in gpu_name:
+                gpu_type = gpu_name.split(":")[-1]
+                params["gres"] = f"gpu:{gpu_type}:{gpu_count}"
+            else:
+                params["gres"] = f"gpu:{gpu_count}"
     
     # Output file
     if job_data.get("stdout"):
